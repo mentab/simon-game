@@ -1,4 +1,4 @@
-import {Button} from "./button.model";
+import {Button} from './button.model';
 
 export class Game {
   private _steps: number[];

@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Button} from "./models/button.model";
-import {Color} from "./color.enum";
+import {Button} from './models/button.model';
 
 @Injectable()
 export class GameService {
@@ -14,15 +13,17 @@ export class GameService {
   }
 
   initializeGame() {
-    for (let i = 0; i < 4; i++) {
-      this._buttons.push(new Button(Color.Blue, 'sound'));
-    }
+    this._buttons.push(new Button('yellow', 'sound1'));
+    this._buttons.push(new Button('green', 'sound2'));
+    this._buttons.push(new Button('red', 'sound3'));
+    this._buttons.push(new Button('blue', 'sound4'));
+
     for (let i = 0; i < 20; i++) {
       this._steps.push(Math.floor(Math.random() * 4));
     }
   }
 
-  get buttons(): any {
+  get buttons(): Button[] {
     return this._buttons;
   }
 
