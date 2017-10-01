@@ -10,21 +10,35 @@ import {GameService} from '../game.service';
 export class GameComponent implements OnInit {
 
   private _gameService: GameService;
-  public displayedSteps: number[];
+  private _currentStep: number;
 
   constructor(gameService: GameService) {
     this._gameService = gameService;
-    this.displayedSteps = [];
+    this._currentStep = 0;
   }
 
   ngOnInit() {
     this._gameService.initializeGame();
-    this.playSounds();
   }
 
-  setActivated(button: Button) {
-    const audioPlayer: HTMLMediaElement = <HTMLMediaElement>document.getElementById(button.sound);
-    audioPlayer.play();
+  verifyButton(button: Button) {
+    this.playSound(button);
+    if (button.id === this._gameService.steps[this._currentStep]) {
+      if (this._currentStep === this._gameService.steps.length - 1) {
+        this._currentStep = 0;
+        this.addStep();
+        this.playSounds();
+      } else {
+        this._currentStep++;
+      }
+    } else {
+      this._currentStep = 0;
+      this.playSounds();
+    }
+  }
+
+  addStep() {
+    this._gameService.addStep();
   }
 
   delay(milliseconds: number, count: number): Promise<number> {
@@ -35,11 +49,15 @@ export class GameComponent implements OnInit {
     });
   }
 
+  playSound(button: Button) {
+    const audioPlayer: HTMLMediaElement = <HTMLMediaElement>document.getElementById(button.sound);
+    audioPlayer.play();
+  }
+
   async playSounds(): Promise<void> {
     for (const step of this._gameService.steps) {
-      const sound = this.setActivated(this._gameService.buttons[step]);
-      this.displayedSteps.push(step);
       const count: number = await this.delay(1000, this._gameService.steps.length);
+      const sound = this.playSound(this._gameService.buttons[step]);
     }
   }
 

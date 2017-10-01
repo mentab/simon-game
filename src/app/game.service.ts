@@ -13,14 +13,15 @@ export class GameService {
   }
 
   initializeGame() {
-    this._buttons.push(new Button('yellow', 'sound1'));
-    this._buttons.push(new Button('green', 'sound2'));
-    this._buttons.push(new Button('red', 'sound3'));
-    this._buttons.push(new Button('blue', 'sound4'));
+    this._buttons.push(new Button(0, 'yellow', 'sound1'));
+    this._buttons.push(new Button(1, 'green', 'sound2'));
+    this._buttons.push(new Button(2, 'red', 'sound3'));
+    this._buttons.push(new Button(3, 'blue', 'sound4'));
+    this.addStep();
+  }
 
-    for (let i = 0; i < 20; i++) {
-      this._steps.push(Math.floor(Math.random() * 4));
-    }
+  addStep() {
+    this._steps.push(Math.floor(Math.random() * 4));
   }
 
   get buttons(): Button[] {
