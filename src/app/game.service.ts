@@ -8,11 +8,11 @@ export class GameService {
   private _steps: number[];
 
   constructor() {
-    this._buttons = [];
-    this._steps = [];
   }
 
   initializeGame() {
+    this._steps = [];
+    this._buttons = [];
     this._buttons.push(new Button(0, 'yellow', 'sound1'));
     this._buttons.push(new Button(1, 'green', 'sound2'));
     this._buttons.push(new Button(2, 'red', 'sound3'));

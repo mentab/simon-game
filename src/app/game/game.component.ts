@@ -11,19 +11,24 @@ export class GameComponent implements OnInit {
 
   private _gameService: GameService;
   private _currentStep: number;
+  private _strictMode: boolean;
 
   constructor(gameService: GameService) {
     this._gameService = gameService;
     this._currentStep = 0;
+    this._strictMode = false;
   }
 
   ngOnInit() {
     this._gameService.initializeGame();
+    this.playSounds();
   }
 
   verifyButton(button: Button) {
-    this.playSound(button);
+    // If it's the right button
     if (button.id === this._gameService.steps[this._currentStep]) {
+      this.playSound(button);
+      // If it's the last step
       if (this._currentStep === this._gameService.steps.length - 1) {
         this._currentStep = 0;
         this.addStep();
@@ -32,8 +37,14 @@ export class GameComponent implements OnInit {
         this._currentStep++;
       }
     } else {
-      this._currentStep = 0;
-      this.playSounds();
+      console.log(this.strictMode);
+      if (this.strictMode) {
+        this.playError();
+        this.restart();
+      } else {
+        this.playError();
+        this.playSounds();
+      }
     }
   }
 
@@ -49,6 +60,11 @@ export class GameComponent implements OnInit {
     });
   }
 
+  playError() {
+    const audioPlayer: HTMLMediaElement = <HTMLMediaElement>document.getElementById('error');
+    audioPlayer.play();
+  }
+
   playSound(button: Button) {
     const audioPlayer: HTMLMediaElement = <HTMLMediaElement>document.getElementById(button.sound);
     audioPlayer.play();
@@ -61,11 +77,25 @@ export class GameComponent implements OnInit {
     }
   }
 
+  restart() {
+    this._gameService.initializeGame();
+    this._currentStep = 0;
+    this.playSounds();
+  }
+
   getButtons(): Button[] {
     return this._gameService.buttons;
   }
 
   getSteps(): number[] {
     return this._gameService.steps;
+  }
+
+  set strictMode(value: boolean) {
+    this._strictMode = value;
+  }
+
+  get strictMode(): boolean {
+    return this._strictMode;
   }
 }
