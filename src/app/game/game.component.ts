@@ -20,8 +20,14 @@ export class GameComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._gameService.initializeGame();
-    this.playSounds();
+    this._gameService.initializeButtons();
+  }
+
+  on() {
+    this._gameService.on = !this._gameService.on;
+    if (this._gameService.on === false) {
+      this._gameService.stopGame();
+    }
   }
 
   verifyButton(button: Button) {
@@ -40,7 +46,7 @@ export class GameComponent implements OnInit {
       console.log(this.strictMode);
       if (this.strictMode) {
         this.playError();
-        this.restart();
+        this.start();
       } else {
         this.playError();
         this.playSounds();
@@ -77,8 +83,9 @@ export class GameComponent implements OnInit {
     }
   }
 
-  restart() {
-    this._gameService.initializeGame();
+  start() {
+    this._gameService.started = true;
+    this._gameService.initializeSteps();
     this._currentStep = 0;
     this.playSounds();
   }
@@ -89,6 +96,14 @@ export class GameComponent implements OnInit {
 
   getSteps(): number[] {
     return this._gameService.steps;
+  }
+
+  getOn(): boolean {
+    return this._gameService.on;
+  }
+
+  getStarted(): boolean {
+    return this._gameService.started;
   }
 
   set strictMode(value: boolean) {
