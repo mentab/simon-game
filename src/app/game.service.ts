@@ -6,11 +6,12 @@ export class GameService {
 
   private _buttons: Button[];
   private _steps: number[];
-  private _on: boolean;
+  private _gameStatus: boolean;
   private _started: boolean;
+  private _playingSounds: boolean;
 
   constructor() {
-    this._on = false;
+    this._gameStatus = false;
     this._started = false;
   }
 
@@ -43,12 +44,12 @@ export class GameService {
     return this._steps;
   }
 
-  get on(): boolean {
-    return this._on;
+  get gameStatus(): boolean {
+    return this._gameStatus;
   }
 
-  set on(value: boolean) {
-    this._on = value;
+  set gameStatus(value: boolean) {
+    this._gameStatus = value;
   }
 
   get started(): boolean {
@@ -57,5 +58,13 @@ export class GameService {
 
   set started(value: boolean) {
     this._started = value;
+  }
+
+  get playingSounds(): boolean {
+    return this._playingSounds;
+  }
+
+  set playingSounds(value: boolean) {
+    this._playingSounds = value;
   }
 }

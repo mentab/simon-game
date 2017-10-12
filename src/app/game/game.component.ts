@@ -23,33 +23,35 @@ export class GameComponent implements OnInit {
     this._gameService.initializeButtons();
   }
 
-  on() {
-    this._gameService.on = !this._gameService.on;
-    if (this._gameService.on === false) {
+  toggleGameStatus() {
+    this._gameService.gameStatus = !this._gameService.gameStatus;
+    if (this._gameService.gameStatus === false) {
       this._gameService.stopGame();
     }
   }
 
   verifyButton(button: Button) {
-    // If it's the right button
-    if (button.id === this._gameService.steps[this._currentStep]) {
-      this.playSound(button);
-      // If it's the last step
-      if (this._currentStep === this._gameService.steps.length - 1) {
-        this._currentStep = 0;
-        this.addStep();
-        this.playSounds();
+    if (this._gameService.gameStatus && !this._gameService.playingSounds) {
+      // If it's the right button
+      if (button.id === this._gameService.steps[this._currentStep]) {
+        this.playSound(button);
+        // If it's the last step
+        if (this._currentStep === this._gameService.steps.length - 1) {
+          this._currentStep = 0;
+          this.addStep();
+          this.playSounds();
+        } else {
+          this._currentStep++;
+        }
       } else {
-        this._currentStep++;
-      }
-    } else {
-      console.log(this.strictMode);
-      if (this.strictMode) {
-        this.playError();
-        this.start();
-      } else {
-        this.playError();
-        this.playSounds();
+        console.log(this.strictMode);
+        if (this.strictMode) {
+          this.playError();
+          this.start();
+        } else {
+          this.playError();
+          this.playSounds();
+        }
       }
     }
   }
@@ -71,15 +73,24 @@ export class GameComponent implements OnInit {
     audioPlayer.play();
   }
 
-  playSound(button: Button) {
+  async playSound(button: Button): Promise<void> {
+    button.opacity = 0.5;
     const audioPlayer: HTMLMediaElement = <HTMLMediaElement>document.getElementById(button.sound);
     audioPlayer.play();
+    console.log('1');
+    const count1: number = await this.delay(1000, this._gameService.steps.length);
+    button.opacity = 1;
   }
 
   async playSounds(): Promise<void> {
     for (const step of this._gameService.steps) {
-      const count: number = await this.delay(1000, this._gameService.steps.length);
+      this._gameService.playingSounds = true;
+      console.log('2');
+      const count2: number = await this.delay(2000, this._gameService.steps.length);
+      console.log('3');
       const sound = this.playSound(this._gameService.buttons[step]);
+      const count3: number = await this.delay(100, this._gameService.steps.length);
+      this._gameService.playingSounds = false;
     }
   }
 
@@ -98,8 +109,8 @@ export class GameComponent implements OnInit {
     return this._gameService.steps;
   }
 
-  getOn(): boolean {
-    return this._gameService.on;
+  getGameStatus(): boolean {
+    return this._gameService.gameStatus;
   }
 
   getStarted(): boolean {
