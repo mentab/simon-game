@@ -5,7 +5,7 @@ import {GameService} from '../game.service';
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
-  styleUrls: ['./game.component.css']
+  styleUrls: ['./game.component.scss']
 })
 export class GameComponent implements OnInit {
 
@@ -45,11 +45,10 @@ export class GameComponent implements OnInit {
         }
       } else {
         console.log(this.strictMode);
+        this.playError();
         if (this.strictMode) {
-          this.playError();
           this.start();
         } else {
-          this.playError();
           this.playSounds();
         }
       }
@@ -74,11 +73,11 @@ export class GameComponent implements OnInit {
   }
 
   async playSound(button: Button): Promise<void> {
-    button.opacity = 0.5;
+    button.opacity = 0.8;
     const audioPlayer: HTMLMediaElement = <HTMLMediaElement>document.getElementById(button.sound);
     audioPlayer.play();
     console.log('1');
-    const count1: number = await this.delay(1000, this._gameService.steps.length);
+    const count1: number = await this.delay(200, this._gameService.steps.length);
     button.opacity = 1;
   }
 

@@ -22,10 +22,10 @@ export class GameService {
 
   initializeButtons() {
     this._buttons = [];
-    this._buttons.push(new Button(0, 'yellow', 'sound1'));
-    this._buttons.push(new Button(1, 'green', 'sound2'));
-    this._buttons.push(new Button(2, 'red', 'sound3'));
-    this._buttons.push(new Button(3, 'blue', 'sound4'));
+    this._buttons.push(new Button(0, '#ffdc00', 'sound1'));
+    this._buttons.push(new Button(1, '#2ecc40', 'sound2'));
+    this._buttons.push(new Button(2, '#ff4136', 'sound3'));
+    this._buttons.push(new Button(3, '#0074d9', 'sound4'));
   }
 
   addStep() {
