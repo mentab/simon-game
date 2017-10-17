@@ -30,6 +30,12 @@ export class GameComponent implements OnInit {
     }
   }
 
+  toggleStrictMode() {
+    if (!this._gameService.started) {
+      this._strictMode = !this._strictMode;
+    }
+  }
+
   verifyButton(button: Button) {
     if (this._gameService.gameStatus && !this._gameService.playingSounds) {
       // If it's the right button
@@ -94,10 +100,12 @@ export class GameComponent implements OnInit {
   }
 
   start() {
-    this._gameService.started = true;
-    this._gameService.initializeSteps();
-    this._currentStep = 0;
-    this.playSounds();
+    if (this._gameService.gameStatus) {
+      this._gameService.started = true;
+      this._gameService.initializeSteps();
+      this._currentStep = 0;
+      this.playSounds();
+    }
   }
 
   getButtons(): Button[] {

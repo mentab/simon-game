@@ -4,21 +4,44 @@
              (click)="verifyButton(button)"
              [style.opacity]="button.opacity"
              [style.background-color]="button.color"
-             class="pad">
+             class="pad big">
     </article>
   </div>
   <aside class="options">
     <h3>Simon</h3>
-    <div class="inside">Count : {{getSteps() ? getSteps().length : '--'}}
-      <button (click)="start()"
-              [disabled]="!getGameStatus()">Start
-      </button>
-      <input type="checkbox"
-             [checked]="strictMode"
-             (change)="strictMode = !strictMode"
-             [disabled]="!getGameStatus() || getStarted()"/>
+    <div class="inside">
+      <div class="item">
+        {{getSteps() ? (getSteps().length > 9 ? getSteps().length : '0' + getSteps().length) : '--'}}
+        <p class="txt">
+          <small>count</small>
+        </p>
+      </div>
+      <div class="item">
+        <div (click)="start()"
+             class="pad little"
+             [style.background-color]="'#ffdc00'">
+        </div>
+        <p class="txt">
+          <small>start</small>
+        </p>
+      </div>
+      <div class="item">
+        <div (click)="toggleStrictMode()"
+             class="pad little"
+             [style.background-color]="'#ff4136'">
+        </div>
+        <p class="txt">
+          <small>strict</small>
+        </p>
+      </div>
     </div>
-    <button (click)="toggleGameStatus()">On / Off</button>
+    <div (click)="toggleGameStatus()"
+    class="switch">
+      <span class="square {{getGameStatus()}}"></span>
+    </div>
+    <p class="txt">
+      <small>On / Off</small>
+    </p>
   </aside>
   <hr>
   <span *ngFor="let step of getSteps()">{{step}}</span>
